@@ -31,6 +31,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: check
+          args: --manifest-path packages/fviz-server/Cargo.toml
 
   test:
     name: Test Suite
@@ -50,6 +51,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
+          args: --manifest-path packages/fviz-server/Cargo.toml
 
   lints:
     name: Lints
@@ -70,10 +72,10 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: fmt
-          args: --all -- --check
+          args: --all --manifest-path packages/fviz-server/Cargo.toml -- --check
 
       - name: Run cargo clippy
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: -- -D warnings
+          args: --manifest-path packages/fviz-server/Cargo.toml -- -D warnings
