@@ -10,3 +10,5 @@
 - [ ] Create Releases
 - [ ] Build docker images
 - [ ] Setup deployments
+- [ ] Set up renovate bot
+- [ ] Set up commit lint
