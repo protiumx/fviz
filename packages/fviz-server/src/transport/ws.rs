@@ -65,7 +65,6 @@ async fn process_client_message(id: &str, msg: Message, _: &Clients) {
   // TODO: use regex
   if message == "ping" || message == "ping\n" {
     // TODO: reply with "pong"
-    return;
   }
 }
 

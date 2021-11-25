@@ -75,4 +75,5 @@ sequenceDiagram
 - [ ] Setup PR check (size, title, etc)
 - [ ] Add logs to server
 - [ ] Define Swagger documentation
-- [ ] Load configuration in memory 
+- [ ] Load configuration in memory
+- [ ] Setup server graceful shutdown
