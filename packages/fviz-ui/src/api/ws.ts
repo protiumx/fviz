@@ -1,27 +1,37 @@
 export class WS {
   private client: WebSocket | null = null;
 
-  constructor(server: string, onMessage: (msg: any) => void) {
-    this.client = new WebSocket(`ws://${server}`);
-    this.client.addEventListener("open", () => {
-      console.log("[ws] connected");
-    });
+  async connect(
+    server: string,
+    sessionUuid: string,
+    onMessage: (data: any) => void
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.client = new WebSocket(`ws://${server}/ws/${sessionUuid}`);
+      this.client.addEventListener("open", () => {
+        resolve();
+      });
 
-    this.client.addEventListener("close", () => {
-      console.log("[ws] disconnected");
-      this.client = null;
-    });
+      this.client.addEventListener("close", () => {
+        this.client = null;
+        reject();
+      });
 
-    this.client.addEventListener("error", () => {
-      console.log("[ws] error");
-    });
+      this.client.addEventListener("error", () => {
+        console.log("[ws] error");
+      });
 
-    this.client.addEventListener("message", (e) => {
-      onMessage(JSON.parse(e.data));
+      this.client.addEventListener("message", (e) => {
+        onMessage(JSON.parse(e.data));
+      });
     });
   }
 
   send(payload: any) {
     this.client!.send(JSON.stringify(payload));
+  }
+
+  sendRaw(payload: string) {
+    this.client!.send(payload);
   }
 }

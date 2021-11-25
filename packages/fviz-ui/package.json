@@ -45,6 +45,7 @@
   "packageManager": "yarn@3.1.0",
   "devDependencies": {
     "$": "link:./src",
+    "flush-promises": "^1.0.2",
     "jest": "^27.3.1",
     "jest-environment-node": "^27.3.1",
     "ts-jest": "next",
