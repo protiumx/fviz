@@ -47,7 +47,6 @@ make test package=<server|ui>
   - `fviz-server/`: `rust` web server
   - `fviz-ui/`: `react` client app
   - `fviz-simulator/`: `go` project to simulate devices/actors
-    - `cmd/drone/`: drone simulation app
 
 ## System communication
 
