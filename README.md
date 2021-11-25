@@ -45,7 +45,9 @@ make test package=<server|ui>
 - `docs/`: text and image assets for documentation
 - `packages/`:
   - `fviz-server/`: `rust` web server
-  - `fviz-ui`/: `react` client app
+  - `fviz-ui/`: `react` client app
+  - `fviz-simulator/`: `go` project to simulate devices/actors
+    - `cmd/drone/`: drone simulation app
 
 ## System communication
 
@@ -65,10 +67,10 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    fviz-ui->>+fviz-server: HTTP POST /handshake { client: "fviz-ui-000" }
-    fviz-server-->>fviz-ui: HTTP { session_uuid: "" }
-    fviz-ui-->>fviz-server: HTTP POST /ws/{session_uuid}
-    fviz-server-->>fviz-ui: Connection: upgrade WS
+    fviz-(ui|simulator)->>+fviz-server: HTTP POST /handshake { client: "fviz-ui-000" }
+    fviz-server-->>fviz-(ui|simulator): HTTP { session_uuid: "18868b27-b1b6-4a09-998b-44ffa1daf114" }
+    fviz-(ui|simulator)-->>fviz-server: HTTP POST /ws/{session_uuid}
+    fviz-server-->>fviz-(ui|simulator): Connection: upgrade WS
 ```
 
 ## Server
