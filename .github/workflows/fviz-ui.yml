@@ -11,6 +11,8 @@ on:
     paths:
       - .github/workflows/fviz-ui.yml
       - packages/fviz-ui/**
+env:
+  SKIP_PREFLIGHT_CHECK: true
 jobs:
 
   ci:

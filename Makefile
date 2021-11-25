@@ -1,4 +1,5 @@
 SHELL := /usr/bin/env bash
+.ONESHELL:
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
 COMMANDS := build run test
@@ -14,11 +15,11 @@ FVIZ_SERVER_TOML = --manifest-path packages/fviz-server/Cargo.toml
 .PHONY: build run test
 
 help: ## shows this output
-	@awk 'BEGIN {FS = ":.*?## "} /([a-zA-Z_-]\s?){1,}:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*?## "} /^([a-zA-Z_-]\s?){1,}:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 build run test: ## (builds | runs | test) a package. usage: <command> package=<package_name>
 ifdef package
-	$(MAKE) $(@)-fviz-$(package)
+	make $(@)-fviz-$(package)
 else:
 	$(error missing `package` variable)
 endif
