@@ -12,6 +12,7 @@ on:
     - packages/fviz-simulator/**
 jobs:
   ci:
+    name: CI
     runs-on: ubuntu-latest
     steps:
     - name: Setup Go
