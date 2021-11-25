@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:9000
+
+### Handshake
+POST {{baseUrl}}/handshake HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "client": "fviz-ui-000"
+}
+
+### Health
+GET {{baseUrl}}/health HTTP/1.1
+Accept: application/json
