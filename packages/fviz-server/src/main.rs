@@ -12,7 +12,7 @@ mod transport;
 extern crate dotenv;
 
 /// For testing purposes. Devices should be loaded from a DB and verified.
-static DEVICES: &'static [&'static str] = &["63bbbb82-c6ce-430f-ac19-f6479cee4ab7"];
+static DEVICES: &[&str] = &["63bbbb82-c6ce-430f-ac19-f6479cee4ab7"];
 
 #[tokio::main]
 async fn main() {
@@ -29,7 +29,7 @@ async fn main() {
 }
 
 async fn load_devices(clients: &ws::Clients) {
-  for item in DEVICES.into_iter().enumerate() {
+  for item in DEVICES.iter().enumerate() {
     let (i, duid): (usize, &&str) = item;
     clients.write().await.insert(
       duid.to_string(),
