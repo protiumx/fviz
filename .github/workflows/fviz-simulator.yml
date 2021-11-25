@@ -11,7 +11,7 @@ on:
     - .github/workflows/fviz-simulator.yml
     - packages/fviz-simulator/**
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
     steps:
     - name: Setup Go
