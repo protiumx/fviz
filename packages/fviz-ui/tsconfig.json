@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es6",
+    "lib": ["dom", "es6", "dom.Iterable", "ScriptHost", "ES2016.Array.Include", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
