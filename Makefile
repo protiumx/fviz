@@ -10,6 +10,7 @@ FVIZ_SERVER_TOML = --manifest-path packages/fviz-server/Cargo.toml
 ######################################################
 
 .PHONY: help build-fviz-server build-fviz-ui test-fviz-server test-fviz-ui run-fviz-server run-fviz-ui
+.PHONY: build-fviz-simulator run-fviz-simulator test-fviz-simulator
 .PHONY: build run test
 
 help: ## shows this output
