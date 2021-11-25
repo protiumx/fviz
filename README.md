@@ -7,6 +7,9 @@
     <a href="https://github.com/protiumx/fviz/actions/workflows/fviz-server.yml" alt="fviz-ui">
         <img src="https://github.com/protiumx/fviz/actions/workflows/fviz-server.yml/badge.svg?branch=main"/>
     </a>
+    <a href="https://github.com/protiumx/fviz/actions/workflows/fviz-simulator.yml" alt="fviz-ui">
+        <img src="https://github.com/protiumx/fviz/actions/workflows/fviz-simulator.yml/badge.svg?branch=main"/>
+    </a>
 </p>
 
 Simple drone flight visualization monorepo.
@@ -47,7 +50,6 @@ make test package=<server|ui>
   - `fviz-server/`: `rust` web server
   - `fviz-ui/`: `react` client app
   - `fviz-simulator/`: `go` project to simulate devices/actors
-    - `cmd/drone/`: drone simulation app
 
 ## System communication
 
