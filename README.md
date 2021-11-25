@@ -1,6 +1,17 @@
 # fviz
 
-Simple drone flight visualization.
+<p align="left">
+    <a href="https://github.com/protiumx/fviz/actions/workflows/fviz-ui.yml" alt="fviz-ui">
+        <img src="https://github.com/protiumx/fviz/actions/workflows/fviz-ui.yml/badge.svg?branch=main"/>
+    </a>
+    <a href="https://github.com/protiumx/fviz/actions/workflows/fviz-server.yml" alt="fviz-ui">
+        <img src="https://github.com/protiumx/fviz/actions/workflows/fviz-server.yml/badge.svg?branch=main"/>
+    </a>
+</p>
+
+Simple drone flight visualization monorepo.
+
+> Note: ideally we should split apps into repositories but for demo purposes this will be a monorepo containing `rust` and `react` apps.
 
 ## Getting Started
 
@@ -60,6 +71,11 @@ sequenceDiagram
     fviz-server-->>fviz-ui: Connection: upgrade WS
 ```
 
+## Server
+
+We relay on [warp](https://github.com/seanmonstar/warp) to handle http and ws requests.
+[tokio](https://github.com/tokio-rs/tokio) is being used for multithreading.
+
 ## TODO
 
 - [x] Setup Rust CI
@@ -77,3 +93,4 @@ sequenceDiagram
 - [ ] Define Swagger documentation
 - [ ] Load configuration in memory
 - [ ] Setup server graceful shutdown
+- [ ] Setup postgres with docker compose
