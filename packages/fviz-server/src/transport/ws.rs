@@ -14,7 +14,7 @@ pub type Clients = Arc<RwLock<HashMap<String, Client>>>;
 #[derive(Debug, Clone)]
 pub struct Client {
   pub client: String,
-  /// Used to forward messages
+  /// Tracks each client sender
   pub sender: Option<mpsc::UnboundedSender<std::result::Result<Message, warp::Error>>>,
 }
 
@@ -53,8 +53,14 @@ pub async fn client_connection(ws: WebSocket, id: String, clients: Clients, mut 
   println!("{} disconnected", id);
 }
 
-async fn process_client_message(id: &str, msg: Message, _: &Clients) {
-  println!("received message from {}: {:?}", id, msg);
+async fn process_client_message(session_uuid: &str, msg: Message, clients: &Clients) {
+  println!("received message from {}: {:?}", session_uuid, msg);
+
+  let client = match clients.read().await.get(session_uuid).cloned() {
+    Some(c) => c,
+    None => return,
+  };
+
   let message = match msg.to_str() {
     Ok(v) => v,
     Err(_) => return,
@@ -64,7 +70,11 @@ async fn process_client_message(id: &str, msg: Message, _: &Clients) {
 
   // TODO: use regex
   if message == "ping" || message == "ping\n" {
-    // TODO: reply with "pong"
+    println!("received ping");
+    if let Some(sender) = client.sender {
+      // Ignore the error. Disconnection should be handled in another task.
+      if let Err(_disconnected) = sender.send(Ok(Message::text("pong"))) {};
+    }
   }
 }
 
