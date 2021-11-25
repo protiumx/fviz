@@ -63,7 +63,22 @@ async fn run_server(addr: SocketAddr, clients: &ws::Clients) {
     .or(handshake_routes)
     .or(ws_route)
     // enable CORS
-    .with(warp::cors().allow_any_origin());
+    .with(
+      warp::cors()
+        .allow_any_origin()
+        .allow_methods(vec!["GET", "POST", "DELETE"])
+        .allow_headers(vec![
+          "Accept",
+          "User-Agent",
+          "Content-Type",
+          "Sec-Fetch-Mode",
+          "Referer",
+          "Origin",
+          "Access-Control-Allow-Origin",
+          "Access-Control-Request-Method",
+          "Access-Control-Request-Headers",
+        ]),
+    );
   println!("Server running at: {}", addr);
   warp::serve(routes).run(addr).await;
 }
