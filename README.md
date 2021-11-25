@@ -7,6 +7,9 @@
     <a href="https://github.com/protiumx/fviz/actions/workflows/fviz-server.yml" alt="fviz-ui">
         <img src="https://github.com/protiumx/fviz/actions/workflows/fviz-server.yml/badge.svg?branch=main"/>
     </a>
+    <a href="https://github.com/protiumx/fviz/actions/workflows/fviz-simulator.yml" alt="fviz-ui">
+        <img src="https://github.com/protiumx/fviz/actions/workflows/fviz-simulator.yml/badge.svg?branch=main"/>
+    </a>
 </p>
 
 Simple drone flight visualization monorepo.
