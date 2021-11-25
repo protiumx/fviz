@@ -87,14 +87,14 @@ We relay on [warp](https://github.com/seanmonstar/warp) to handle http and ws re
 - [x] SetReact Yarn 2
 - [ ] Setup ESLint
 - [ ] Setup Stylelint
-- [ ] Create Releases
 - [ ] Build docker images
 - [ ] Setup deployments
 - [ ] Setup renovate bot
-- [ ] Setup commit lint
+- [ ] Setup commit lint (ci or local)
 - [ ] Setup PR check (size, title, etc)
 - [ ] Add logs to server
-- [ ] Define Swagger documentation
+- [ ] Set Swagger documentation from warp handlers
 - [ ] Load configuration in memory
 - [ ] Setup server graceful shutdown
 - [ ] Setup postgres with docker compose
+- [ ] Setup rate limit and payload size

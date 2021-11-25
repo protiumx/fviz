@@ -1,4 +1,5 @@
 SHELL := /usr/bin/env bash
+.ONESHELL:
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
 COMMANDS := build run test
