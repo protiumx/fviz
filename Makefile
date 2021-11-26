@@ -40,7 +40,7 @@ run-fviz-ui: ## runs yarn start for fviz-ui
 	yarn --cwd packages/fviz-ui/ start
 
 run-fviz-simulator: ## runs go run for fviz-simulator
-	make -C packages/fviz-simulator/ build
+	make -C packages/fviz-simulator/ run
 
 test-fviz-server: ## runs cargo test for fviz-server
 	cargo test $(FVIZ_SERVER_TOML)
@@ -48,5 +48,5 @@ test-fviz-server: ## runs cargo test for fviz-server
 test-fviz-ui: ## runs yarn test for fviz-ui
 	yarn --cwd packages/fviz-ui/ test
 
-run-fviz-simulator: ## runs go test for fviz-simulator
+test-fviz-simulator: ## runs go test for fviz-simulator
 	make -C packages/fviz-simulator/ test

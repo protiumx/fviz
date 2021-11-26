@@ -28,19 +28,19 @@ Simple drone flight visualization monorepo.
 Build a package
 
 ```bash
-make build package=<server|ui>
+make build package=<server|ui|simulator>
 ```
 
 Run a package
 
 ```bash
-make run package=<server|ui>
+make run package=<server|ui|simulator>
 ```
 
 Test a package
 
 ```bash
-make test package=<server|ui>
+make test package=<server|ui|simulator>
 ```
 
 ### Folder structure
@@ -61,6 +61,14 @@ sequenceDiagram
     fviz-server->>+fviz-ui: ws/device-status (postition, system health)
     fviz-server->>+fviz-device: ws/commands (land, new position)
     fviz-ui->>+fviz-server: ws/command (land, new position)
+```
+
+### Format of WS messages
+
+Each status update from a device/actor should be formatted as follow
+```
+<command> // note the line break
+<lat> <lng> <alt>
 ```
 
 ## Client handshake/registration
