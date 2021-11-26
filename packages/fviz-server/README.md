@@ -23,3 +23,6 @@ build
 ```bash
 cargo build
 ```
+
+## TODO
+- [ ] Terminate client connection properly
