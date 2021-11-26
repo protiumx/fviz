@@ -1,19 +1,3 @@
-function computePositionProperty(
-  altitudeOffset: number,
-  positionData: number[]
-) {
-  var property = new Cesium.SampledPositionProperty();
-  // Simulate realtime data
-  const time = Cesium.JulianDate.fromDate(new Date());
-  const position = Cesium.Cartesian3.fromDegrees(
-    positionData[0],
-    positionData[1],
-    positionData[2] + altitudeOffset
-  );
-  property.addSample(time, position);
-  return property;
-}
-
 export default class Drone {
   public entity: any = null;
   constructor(private viewer: any) {}
