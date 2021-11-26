@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
+	"github.com/protiumx/fviz/devices/drone"
 )
 
 var done chan interface{}
@@ -32,6 +33,12 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	drone := drone.New(os.Getenv("DRONE_DUID"))
+	err = drone.LoadData("devices/drone/data/000.fviz")
+	if err != nil {
+		log.Fatal("Error loading drone data")
+	}
+
 	done = make(chan interface{})
 	interrupt = make(chan os.Signal) // Listen for interrupt signals
 
@@ -52,7 +59,7 @@ func main() {
 		select {
 		case <-time.After(time.Duration(5) * time.Second):
 			// Send an echo packet every second
-			err := conn.WriteMessage(websocket.TextMessage, []byte("ping"))
+			err := conn.WriteMessage(websocket.TextMessage, []byte(drone.Status()))
 			if err != nil {
 				log.Println("Error during writing to websocket:", err)
 				return

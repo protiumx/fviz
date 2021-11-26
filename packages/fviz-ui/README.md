@@ -9,5 +9,17 @@ React App to visualize fviz actors activity.
 
 
 ## TODO
+
 - [ ] Fix `cesium` package with yarn2 and react scripts
 - [ ] Switch to `webpack`
+
+## Development
+
+Run
+```bash
+yarn start:dev
+```
+Build
+```bash
+yarn build
+```

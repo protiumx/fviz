@@ -34,7 +34,7 @@ async fn load_devices(clients: &ws::Clients) {
     clients.write().await.insert(
       duid.to_string(),
       ws::Client {
-        client: format!("FVIZ-[{}]", i),
+        name: format!("DEVICE-{:03}", i),
         sender: None,
       },
     );

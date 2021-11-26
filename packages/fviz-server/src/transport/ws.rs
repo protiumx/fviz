@@ -13,7 +13,7 @@ pub type Clients = Arc<RwLock<HashMap<String, Client>>>;
 /// Client representation
 #[derive(Debug, Clone)]
 pub struct Client {
-  pub client: String,
+  pub name: String,
   /// Tracks each client sender
   pub sender: Option<mpsc::UnboundedSender<std::result::Result<Message, warp::Error>>>,
 }
@@ -65,9 +65,6 @@ async fn process_client_message(session_uuid: &str, msg: Message, clients: &Clie
     Ok(v) => v,
     Err(_) => return,
   };
-
-  println!("{}", message);
-
   // TODO: use regex
   if message == "ping" || message == "ping\n" {
     println!("received ping");
@@ -75,7 +72,21 @@ async fn process_client_message(session_uuid: &str, msg: Message, clients: &Clie
       // Ignore the error. Disconnection should be handled in another task.
       if let Err(_disconnected) = sender.send(Ok(Message::text("pong"))) {};
     }
+    return;
   }
+
+  // Broadcast to UI clients
+  println!("Broadcasting to all UI clients");
+  clients
+    .read()
+    .await
+    .iter()
+    .filter(|(_, client)| client.name.contains("FVIZ-"))
+    .for_each(|(_, client)| {
+      if let Some(sender) = &client.sender {
+        let _ = sender.send(Ok(Message::text(message)));
+      }
+    });
 }
 
 #[cfg(test)]

@@ -34,16 +34,13 @@ pub async fn handshake_handler(
   Ok(json(&HandshakeResponse { session_uuid }))
 }
 
-async fn register_client(uuid: String, client: String, clients: ws::Clients) {
+async fn register_client(uuid: String, name: String, clients: ws::Clients) {
   // We need to await the tokio asynchronous mutex
   // TODO: check if the client is already registered
-  clients.write().await.insert(
-    uuid,
-    ws::Client {
-      client,
-      sender: None,
-    },
-  );
+  clients
+    .write()
+    .await
+    .insert(uuid, ws::Client { name, sender: None });
 }
 
 /// Upgrades a client connection to WS if the client exists
