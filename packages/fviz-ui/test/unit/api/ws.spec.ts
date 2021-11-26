@@ -86,8 +86,8 @@ describe("ws", () => {
 
     // NOTE: it's affected by order of calls
     const onMessageListener = client.addEventListener.mock.calls[3][1];
-    onMessageListener({ data: JSON.stringify({ message: "test" }) });
+    onMessageListener({ data: "ping" });
 
-    expect(onMessage).toHaveBeenCalledWith({ message: "test" });
+    expect(onMessage).toHaveBeenCalledWith("ping");
   });
 });

@@ -22,7 +22,7 @@ export class WS {
       });
 
       this.client.addEventListener("message", (e) => {
-        onMessage(JSON.parse(e.data));
+        onMessage(e.data);
       });
     });
   }
