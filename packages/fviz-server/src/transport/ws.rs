@@ -19,12 +19,17 @@ pub struct Client {
 }
 
 /// Spawn a new tokio task for the client ws connection. Acts as Stream and Sink (sender and a receiver)
-pub async fn client_connection(ws: WebSocket, id: String, clients: Clients, mut client: Client) {
+pub async fn client_connection(
+  ws: WebSocket,
+  session_uuid: String,
+  clients: Clients,
+  mut client: Client,
+) {
   // split into ender and receiver
-  let (client_ws_sender, mut client_ws_rcv) = ws.split();
+  let (tx, mut rx) = ws.split();
   let (client_sender, client_rcv) = mpsc::unbounded_channel();
 
-  tokio::task::spawn(client_rcv.forward(client_ws_sender).map(|result| {
+  tokio::task::spawn(client_rcv.forward(tx).map(|result| {
     if let Err(e) = result {
       eprintln!("error sending websocket msg: {}", e);
     }
@@ -32,25 +37,30 @@ pub async fn client_connection(ws: WebSocket, id: String, clients: Clients, mut 
 
   // update clients sender channel
   client.sender = Some(client_sender);
-  clients.write().await.insert(id.clone(), client);
+  clients.write().await.insert(session_uuid.clone(), client);
 
-  println!("{} connected", id);
+  println!("{} connected", session_uuid);
 
   // Await for client streams
-  while let Some(result) = client_ws_rcv.next().await {
+  while let Some(result) = rx.next().await {
     let msg = match result {
       Ok(msg) => msg,
       Err(e) => {
-        eprintln!("error receiving ws message for id: {}): {}", id.clone(), e);
+        eprintln!(
+          "error receiving ws message for session_uuid: {}): {}",
+          session_uuid.clone(),
+          e
+        );
         // TODO: disconnect WS
         break;
       }
     };
-    process_client_message(&id, msg, &clients).await;
+    process_client_message(&session_uuid, msg, &clients).await;
   }
 
-  clients.write().await.remove(&id);
-  println!("{} disconnected", id);
+  clients.write().await.remove(&session_uuid);
+
+  println!("{} disconnected", session_uuid);
 }
 
 async fn process_client_message(session_uuid: &str, msg: Message, clients: &Clients) {
@@ -60,6 +70,11 @@ async fn process_client_message(session_uuid: &str, msg: Message, clients: &Clie
     Some(c) => c,
     None => return,
   };
+
+  // if msg.is_close() {
+  //   println!("Client {} has closed", session_uuid);
+  //   clients.write().await.remove(session_uuid);
+  // }
 
   let message = match msg.to_str() {
     Ok(v) => v,
