@@ -84,7 +84,7 @@ async fn process_client_message(session_uuid: &str, msg: Message, clients: &Clie
     .filter(|(_, client)| client.name.contains("FVIZ-"))
     .for_each(|(_, client)| {
       if let Some(sender) = &client.sender {
-        let _ = sender.send(Ok(Message::text(message.clone())));
+        let _ = sender.send(Ok(Message::text(message)));
       }
     });
 }
