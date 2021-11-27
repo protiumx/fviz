@@ -7,10 +7,12 @@ on:
     paths:
       - .github/workflows/fviz-ui.yml
       - packages/fviz-ui/**
+      - '!**/*.md'
   pull_request:
     paths:
       - .github/workflows/fviz-ui.yml
       - packages/fviz-ui/**
+      - '!**/*.md'
 env:
   SKIP_PREFLIGHT_CHECK: true
 jobs:

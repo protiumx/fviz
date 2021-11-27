@@ -6,10 +6,12 @@ on:
     paths:
     - .github/workflows/fviz-simulator.yml
     - packages/fviz-simulator/**
+    - '!**/*.md'
   pull_request:
     paths:
     - .github/workflows/fviz-simulator.yml
     - packages/fviz-simulator/**
+    - '!**/*.md'
 jobs:
   ci:
     name: CI
