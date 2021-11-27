@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+commitlint -x "$(npm root -g)/@commitlint/config-conventional"
