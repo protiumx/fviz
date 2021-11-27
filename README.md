@@ -88,6 +88,20 @@ sequenceDiagram
 We relay on [warp](https://github.com/seanmonstar/warp) to handle http and ws requests.
 [tokio](https://github.com/tokio-rs/tokio) is being used for multithreading.
 
+## Conventional commits
+
+In this repository commits messages are formatted following [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
+You will need a linter running locally.
+
+```bash
+npm i -g @commitlint/cli @commitlint/config-conventional
+```
+
+To set git hooks for commit linting messages run 
+```bash
+make init-git
+```
+
 ## TODO
 
 - [x] Setup Rust CI

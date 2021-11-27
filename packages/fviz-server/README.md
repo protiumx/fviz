@@ -26,3 +26,5 @@ cargo build
 
 ## TODO
 - [ ] Terminate client connection properly
+- [ ] Setup `diesel` with postgres
+- [ ] Load devices from DB

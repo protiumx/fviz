@@ -1,5 +1,4 @@
 SHELL := /usr/bin/env bash
-.ONESHELL:
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
 COMMANDS := build run test
@@ -50,3 +49,17 @@ test-fviz-ui: ## runs yarn test for fviz-ui
 
 test-fviz-simulator: ## runs go test for fviz-simulator
 	make -C packages/fviz-simulator/ test
+
+######################################################
+# INTERNAL
+######################################################
+
+.PHONY: init init-git
+
+init: init-git
+
+init-git: ## sets git hooks for commit linting
+	@hookspath="git config --local core.hooksPath" ;\
+	if git rev-parse &>/dev/null ; then \
+	    $${hookspath} .ci/hooks ;\
+	fi
