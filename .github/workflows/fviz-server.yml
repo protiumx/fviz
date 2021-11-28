@@ -5,11 +5,12 @@ on:
     paths:
       - .github/workflows/fviz-server.yml
       - packages/fviz-server/**
+      - '!**/*.md'
   pull_request:
     paths:
       - .github/workflows/fviz-server.yml
       - packages/fviz-server/**
-
+      - '!**/*.md'
 name: fviz-server
 
 jobs:
