@@ -1,5 +1,5 @@
 [package]
-name = "fviz-server"
+name = "fviz_server"
 version = "0.1.0"
 edition = "2018"
 

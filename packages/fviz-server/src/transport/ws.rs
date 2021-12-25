@@ -80,9 +80,7 @@ async fn process_client_message(session_uuid: &str, msg: Message, clients: &Clie
     Ok(v) => v,
     Err(_) => return,
   };
-  // TODO: use regex
-  if message == "ping" || message == "ping\n" {
-    println!("received ping");
+  if message.contains("ping") {
     if let Some(sender) = client.sender {
       // Ignore the error. Disconnection should be handled in another task.
       if let Err(_disconnected) = sender.send(Ok(Message::text("pong"))) {};

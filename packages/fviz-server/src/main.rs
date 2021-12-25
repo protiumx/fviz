@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::convert::Infallible;
 use std::net::SocketAddr;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -43,25 +42,9 @@ async fn load_devices(clients: &ws::Clients) {
 }
 
 async fn run_server(addr: SocketAddr, clients: &ws::Clients) {
-  let health_route = warp::path!("health").and_then(http::health_handler);
-
-  let handshake = warp::path("handshake");
-  let handshake_routes = handshake
-    .and(warp::post())
-    .and(warp::body::json())
-    .and(with_clients(clients.clone()))
-    .and_then(http::handshake_handler);
-
-  let ws_route = warp::path("ws")
-    // use warp ws filter to upgrade connection
-    .and(warp::ws())
-    .and(warp::path::param())
-    .and(with_clients(clients.clone()))
-    .and_then(http::ws_handler);
-
-  let routes = health_route
-    .or(handshake_routes)
-    .or(ws_route)
+  let routes = http::filters::health()
+    .or(http::filters::handshake(clients.clone()))
+    .or(http::filters::websockets(clients.clone()))
     // enable CORS
     .with(
       warp::cors()
@@ -81,11 +64,4 @@ async fn run_server(addr: SocketAddr, clients: &ws::Clients) {
     );
   println!("Server running at: {}", addr);
   warp::serve(routes).run(addr).await;
-}
-
-/// Clone clients
-fn with_clients(
-  clients: ws::Clients,
-) -> impl Filter<Extract = (ws::Clients,), Error = Infallible> + Clone {
-  warp::any().map(move || clients.clone())
 }

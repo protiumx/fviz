@@ -6,7 +6,7 @@ use warp::{http::StatusCode, reply::json, Reply};
 /// Represent a client handshake request.
 ///
 /// Clients should be known in the system as `actors`.
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct HandshakeRequest {
   client: String,
 }
@@ -65,20 +65,71 @@ pub async fn health_handler() -> ws::Result<impl Reply> {
   Ok(StatusCode::OK)
 }
 
-#[cfg(test)]
-mod tests {
-
+pub mod filters {
   use super::*;
+  use std::convert::Infallible;
+  use warp::Filter;
 
-  #[test]
-  #[ignore]
-  fn test_register_client() {}
+  pub fn handshake(
+    clients: ws::Clients,
+  ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+    warp::path("handshake")
+      .and(warp::post())
+      .and(warp::body::json())
+      .and(with_clients(clients))
+      .and_then(handshake_handler)
+  }
 
-  #[test]
-  #[ignore]
-  fn test_upgrade_connection() {}
+  pub fn websockets(
+    clients: ws::Clients,
+  ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+    warp::path("ws")
+      // use warp ws filter to upgrade connection
+      .and(warp::ws())
+      .and(warp::path::param())
+      .and(with_clients(clients))
+      .and_then(ws_handler)
+  }
 
-  #[test]
-  #[ignore]
-  fn test_health() {}
+  pub fn health() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+    warp::path!("health").and_then(health_handler)
+  }
+
+  fn with_clients(
+    clients: ws::Clients,
+  ) -> impl Filter<Extract = (ws::Clients,), Error = Infallible> + Clone {
+    warp::any().map(move || clients.clone())
+  }
+}
+
+#[cfg(test)]
+mod should {
+  use super::{filters, ws, HandshakeRequest};
+  use std::collections::HashMap;
+  use std::sync::Arc;
+  use tokio::sync::RwLock;
+  use warp::test::request;
+
+  #[tokio::test]
+  async fn return_health_status() {
+    let api = filters::health();
+    let resp = request().method("GET").path("/health").reply(&api).await;
+    assert_eq!(resp.status(), 200);
+  }
+
+  #[tokio::test]
+  async fn register_new_client() {
+    let clients: ws::Clients = Arc::new(RwLock::new(HashMap::new()));
+    let api = filters::handshake(clients);
+    let resp = request()
+      .method("POST")
+      .path("/handshake")
+      .json(&HandshakeRequest {
+        client: "FVIZ-TEST".to_string(),
+      })
+      .reply(&api)
+      .await;
+    let result: Vec<u8> = resp.into_body().into_iter().collect();
+    // result
+  }
 }
